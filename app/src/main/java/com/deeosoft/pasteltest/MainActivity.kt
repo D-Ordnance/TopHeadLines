@@ -26,6 +26,7 @@ import com.deeosoft.pasteltest.custom.ItemCard
 import com.deeosoft.pasteltest.db.model.HeadLineItem
 import com.deeosoft.pasteltest.ui.theme.PastelTestTheme
 import com.deeosoft.pasteltest.ui.theme.TitleBlack
+import com.deeosoft.pasteltest.util.format
 import com.deeosoft.pasteltest.viewModel.HeadLineViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -89,7 +90,7 @@ fun ContentScreen(viewModel: HeadLineViewModel,
     if(failure.value != null){
         Toast.makeText(
             context,
-            viewModel.failure.value,
+            viewModel.failure.value?.format(context) ?: context.getString(R.string.default_error_message),
             Toast.LENGTH_LONG)
             .show()
     }
