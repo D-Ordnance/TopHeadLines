@@ -1,8 +1,8 @@
-package com.deeosoft.pasteltest.network.di
+package com.deeosoft.pasteltest.infrastructure.network.di
 
 import android.content.Context
 import com.deeosoft.pasteltest.BuildConfig
-import com.deeosoft.pasteltest.network.NetworkService
+import com.deeosoft.pasteltest.infrastructure.network.NetworkService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,7 +33,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideNetworkService(retrofit: Retrofit): NetworkService{
+    fun provideNetworkService(retrofit: Retrofit): NetworkService {
         return retrofit.create(NetworkService::class.java)
     }
 }

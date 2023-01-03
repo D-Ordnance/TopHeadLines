@@ -1,4 +1,4 @@
-package com.deeosoft.pasteltest
+package com.deeosoft.pasteltest.headlines.compose
 
 import android.os.Bundle
 import android.widget.Toast
@@ -22,12 +22,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.deeosoft.pasteltest.custom.ItemCard
-import com.deeosoft.pasteltest.db.model.HeadLineItem
+import com.deeosoft.pasteltest.R
+import com.deeosoft.pasteltest.headlines.custom.ItemCard
+import com.deeosoft.pasteltest.headlines.db.model.HeadLineItem
 import com.deeosoft.pasteltest.ui.theme.PastelTestTheme
 import com.deeosoft.pasteltest.ui.theme.TitleBlack
 import com.deeosoft.pasteltest.util.format
-import com.deeosoft.pasteltest.viewModel.HeadLineViewModel
+import com.deeosoft.pasteltest.headlines.viewModel.HeadLineViewModel
+import com.deeosoft.pasteltest.web.CustomWebView
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,13 +44,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = TitleBlack
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        ToolbarAndHeaderComposable()
-                        MainScreen()
-                    }
+                    MainScreen()
                 }
             }
         }
@@ -56,6 +52,17 @@ class MainActivity : ComponentActivity() {
 }
 
 var calledOnce = false
+
+@Composable
+fun MainScreen(){
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        ToolbarAndHeaderComposable()
+        SwipeRefreshList()
+    }
+}
 
 @Composable
 fun ToolbarAndHeaderComposable(){
@@ -77,6 +84,7 @@ fun ToolbarAndHeaderComposable(){
         )
     }
 }
+
 @Composable
 fun ContentScreen(viewModel: HeadLineViewModel,
                   selectedItem: (HeadLineItem) -> Unit){
@@ -111,10 +119,8 @@ fun ContentScreen(viewModel: HeadLineViewModel,
     }
 }
 
-
-
 @Composable
-fun MainScreen(viewModel: HeadLineViewModel = hiltViewModel()) {
+fun SwipeRefreshList(viewModel: HeadLineViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val headLineViewModel = remember{viewModel}
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = headLineViewModel.loading.value!!)

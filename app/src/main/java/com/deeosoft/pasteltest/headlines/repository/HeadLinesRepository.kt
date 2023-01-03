@@ -1,10 +1,10 @@
-package com.deeosoft.pasteltest.repository
+package com.deeosoft.pasteltest.headlines.repository
 
 import com.deeosoft.pasteltest.BuildConfig
-import com.deeosoft.pasteltest.db.HeadLineDatabase
-import com.deeosoft.pasteltest.db.model.HeadLineItem
-import com.deeosoft.pasteltest.db.model.UIHeadLinesCollection
-import com.deeosoft.pasteltest.network.NetworkService
+import com.deeosoft.pasteltest.headlines.db.HeadLineDatabase
+import com.deeosoft.pasteltest.headlines.db.model.HeadLineItem
+import com.deeosoft.pasteltest.headlines.db.model.UIHeadLinesCollection
+import com.deeosoft.pasteltest.infrastructure.network.NetworkService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -46,6 +46,8 @@ class HeadLinesRepository
             if (!forceServer) {
                 response = localSource()
                 emit(response)
+            }else{
+                println("force server called")
             }
             val remoteResponse = response?.let { remoteSource(localData = it) }
             if (remoteResponse != null) {

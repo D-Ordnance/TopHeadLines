@@ -1,4 +1,4 @@
-package com.deeosoft.pasteltest
+package com.deeosoft.pasteltest.headlines.ui
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.hasClickAction
@@ -6,6 +6,8 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import com.deeosoft.pasteltest.R
+import com.deeosoft.pasteltest.headlines.compose.ToolbarAndHeaderComposable
 import org.junit.Rule
 import org.junit.Test
 

@@ -1,14 +1,16 @@
-package com.deeosoft.pasteltest.viewModel
+package com.deeosoft.pasteltest.headlines.viewModel
 
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.deeosoft.pasteltest.BuildConfig
-import com.deeosoft.pasteltest.db.HeadLineDatabase
-import com.deeosoft.pasteltest.network.NetworkService
-import com.deeosoft.pasteltest.repository.HeadLinesRepository
+import com.deeosoft.pasteltest.headlines.db.HeadLineDatabase
+import com.deeosoft.pasteltest.headlines.viewModel.HeadLineViewModel
+import com.deeosoft.pasteltest.infrastructure.network.NetworkService
+import com.deeosoft.pasteltest.headlines.repository.HeadLinesRepository
 import junit.framework.TestCase
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import retrofit2.Retrofit
@@ -19,6 +21,7 @@ class HeadLineViewModelTest: TestCase(){
     private lateinit var viewModel: HeadLineViewModel
     private lateinit var database: HeadLineDatabase
 
+    @Before
     public override fun setUp() {
         super.setUp()
         val context = ApplicationProvider.getApplicationContext<Context>()

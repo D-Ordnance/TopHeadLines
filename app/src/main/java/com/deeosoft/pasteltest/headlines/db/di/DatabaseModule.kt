@@ -1,8 +1,8 @@
-package com.deeosoft.pasteltest.db.di
+package com.deeosoft.pasteltest.headlines.db.di
 
 import android.content.Context
 import androidx.room.Room
-import com.deeosoft.pasteltest.db.HeadLineDatabase
+import com.deeosoft.pasteltest.headlines.db.HeadLineDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +14,7 @@ import javax.inject.Singleton
 object DatabaseModule {
     @Provides
     @Singleton
-    fun provideDataBaseObject(context: Context): HeadLineDatabase{
+    fun provideDataBaseObject(context: Context): HeadLineDatabase {
         return Room.databaseBuilder(
             context,
             HeadLineDatabase::class.java,

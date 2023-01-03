@@ -1,12 +1,12 @@
-package com.deeosoft.pasteltest.viewModel
+package com.deeosoft.pasteltest.headlines.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.deeosoft.pasteltest.db.model.UIHeadLinesCollection
-import com.deeosoft.pasteltest.repository.HeadLinesRepository
-import com.deeosoft.pasteltest.repository.Resource
+import com.deeosoft.pasteltest.headlines.db.model.UIHeadLinesCollection
+import com.deeosoft.pasteltest.headlines.repository.HeadLinesRepository
+import com.deeosoft.pasteltest.headlines.repository.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

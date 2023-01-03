@@ -1,6 +1,6 @@
-package com.deeosoft.pasteltest.network
+package com.deeosoft.pasteltest.infrastructure.network
 
-import com.deeosoft.pasteltest.db.model.ServerHeadLine
+import com.deeosoft.pasteltest.headlines.db.model.ServerHeadLine
 import retrofit2.http.GET
 import retrofit2.http.Query
 

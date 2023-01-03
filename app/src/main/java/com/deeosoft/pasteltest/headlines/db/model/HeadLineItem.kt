@@ -1,4 +1,4 @@
-package com.deeosoft.pasteltest.db.model
+package com.deeosoft.pasteltest.headlines.db.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
