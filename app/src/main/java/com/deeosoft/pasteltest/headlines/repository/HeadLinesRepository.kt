@@ -14,18 +14,18 @@ class HeadLinesRepository
     private val networkService: NetworkService,
     private val database: HeadLineDatabase
 ){
-    private suspend fun remoteSource(localData: Resource<UIHeadLinesCollection>): Resource<UIHeadLinesCollection> =
+    private suspend fun remoteSource(): Resource<UIHeadLinesCollection> =
         try {
             val response = networkService.getTopHeadLines(apiKey = BuildConfig.API_KEY)
             if(response.status.equals("ok", ignoreCase = true))
                 Resource.Success(UIHeadLinesCollection(response.articles))
             else {
-                Resource.Error(response.status, localData.data)
+                Resource.Error(response.status)
             }
 
         }catch (ex: Exception){
             ex.printStackTrace()
-            Resource.Error(ex.message!!, localData.data)
+            Resource.Error(ex.message!!)
         }
 
     private suspend fun localSource(): Resource<UIHeadLinesCollection> =
@@ -33,7 +33,7 @@ class HeadLinesRepository
             val response = database.headLineDao().getTopHeadLines()
             Resource.Success(UIHeadLinesCollection(response))
         }catch (ex: Exception){
-            remoteSource(Resource.Error(message = "An error occurred"))
+            remoteSource()
         }
 
     private suspend fun saveToLocal(data: List<HeadLineItem?>){
@@ -46,14 +46,10 @@ class HeadLinesRepository
             if (!forceServer) {
                 response = localSource()
                 emit(response)
-            }else{
-                println("force server called")
             }
-            val remoteResponse = response?.let { remoteSource(localData = it) }
-            if (remoteResponse != null) {
-                remoteResponse.data?.let { saveToLocal(it.articles) }
-                emit(remoteResponse)
-            }
+            val remoteResponse = remoteSource()
+            remoteResponse.data?.let { saveToLocal(it.articles) }
+            emit(remoteResponse)
         }
 }
 

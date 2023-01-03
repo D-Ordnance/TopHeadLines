@@ -1,4 +1,4 @@
-package com.deeosoft.pasteltest.headlines.compose
+package com.deeosoft.pasteltest.headlines.ui
 
 import android.os.Bundle
 import android.widget.Toast
@@ -60,7 +60,7 @@ fun MainScreen(){
         modifier = Modifier.fillMaxWidth()
     ) {
         ToolbarAndHeaderComposable()
-        SwipeRefreshList()
+        SwipeRefreshListComposable()
     }
 }
 
@@ -96,6 +96,7 @@ fun ContentScreen(viewModel: HeadLineViewModel,
         println("loading ...")
     }
     if(failure.value != null){
+        calledOnce = false
         Toast.makeText(
             context,
             viewModel.failure.value?.format(context) ?: context.getString(R.string.default_error_message),
@@ -103,6 +104,7 @@ fun ContentScreen(viewModel: HeadLineViewModel,
             .show()
     }
     if(success.value != null){
+        calledOnce = false
         LazyColumn{
             items(viewModel.success.value!!.articles) {
                 if (it != null) {
@@ -120,20 +122,23 @@ fun ContentScreen(viewModel: HeadLineViewModel,
 }
 
 @Composable
-fun SwipeRefreshList(viewModel: HeadLineViewModel = hiltViewModel()) {
+fun SwipeRefreshListComposable(viewModel: HeadLineViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val headLineViewModel = remember{viewModel}
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = headLineViewModel.loading.value!!)
+    val isLoading by headLineViewModel.loading.observeAsState()
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isLoading!!)
     if(!calledOnce) {
-        viewModel.getTopHeadLine()
+        headLineViewModel.getTopHeadLine()
         calledOnce = true
     }
 
     SwipeRefresh(
         state = swipeRefreshState,
-        onRefresh = { viewModel.getTopHeadLine(true) }
+        onRefresh = {
+            (headLineViewModel::getTopHeadLine)(true)
+        }
     ) {
-        ContentScreen(headLineViewModel, selectedItem = {
+        ContentScreen(viewModel, selectedItem = {
             CustomWebView.startActivity(context, it.url, it.author)
         })
     }

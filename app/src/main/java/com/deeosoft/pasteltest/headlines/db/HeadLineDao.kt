@@ -8,7 +8,7 @@ import com.deeosoft.pasteltest.headlines.db.model.HeadLineItemWithoutAutoGenerat
 @Dao
 interface HeadLineDao {
 
-    @Query("SELECT * from HeadLineItem")
+    @Query("SELECT * from HeadLineItem ORDER BY id DESC")
     suspend fun getTopHeadLines(): List<HeadLineItem?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
