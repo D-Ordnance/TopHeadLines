@@ -35,7 +35,7 @@ class MainActivityTest{
             ApplicationProvider.getApplicationContext(),
             HeadLineDatabase::class.java
         ).allowMainThreadQueries().build()
-        val headLinesRepository = HeadLinesRepository(networkService, database)
+        val headLinesRepository = HeadLinesRepository(networkService, database, rule.activity.application)
         viewModel = HeadLineViewModel(headLinesRepository)
     }
 

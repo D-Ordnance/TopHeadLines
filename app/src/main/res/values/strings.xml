@@ -5,4 +5,5 @@
     <string name="top_news">Top News</string>
     <string name="ui_network_error_message">Network Error\nPlease check your connection and retry</string>
     <string name="default_error_message">An Error Occurred\nSwipe to refresh</string>
+    <string name="no_new_update">No new update</string>
 </resources>

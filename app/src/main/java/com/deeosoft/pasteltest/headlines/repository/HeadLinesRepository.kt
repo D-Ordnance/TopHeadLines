@@ -1,6 +1,9 @@
 package com.deeosoft.pasteltest.headlines.repository
 
+import android.app.Application
+import android.database.sqlite.SQLiteConstraintException
 import com.deeosoft.pasteltest.BuildConfig
+import com.deeosoft.pasteltest.R
 import com.deeosoft.pasteltest.headlines.db.HeadLineDatabase
 import com.deeosoft.pasteltest.headlines.db.model.HeadLineItem
 import com.deeosoft.pasteltest.headlines.db.model.UIHeadLinesCollection
@@ -12,13 +15,17 @@ import javax.inject.Inject
 class HeadLinesRepository
 @Inject constructor(
     private val networkService: NetworkService,
-    private val database: HeadLineDatabase
+    private val database: HeadLineDatabase,
+    app: Application
 ){
+    private val context = app.applicationContext
     private suspend fun remoteSource(): Resource<UIHeadLinesCollection> =
         try {
             val response = networkService.getTopHeadLines(apiKey = BuildConfig.API_KEY)
-            if(response.status.equals("ok", ignoreCase = true))
-                Resource.Success(UIHeadLinesCollection(response.articles))
+            if(response.status.equals("ok", ignoreCase = true)) {
+                saveToLocal(response.articles)
+                localSource()
+            }
             else {
                 Resource.Error(response.status)
             }
@@ -33,16 +40,20 @@ class HeadLinesRepository
             val response = database.headLineDao().getTopHeadLines()
             Resource.Success(UIHeadLinesCollection(response))
         }catch (ex: Exception){
-            remoteSource()
+            if(ex is SQLiteConstraintException){
+                Resource.Error(context.getString(R.string.no_new_update))
+            }else{
+                Resource.Error(context.getString(R.string.default_error_message))
+            }
         }
 
     private suspend fun saveToLocal(data: List<HeadLineItem?>){
-        database.headLineDao().insert(data)
+        database.headLineDao().insert(data.asReversed())
     }
 
     suspend fun getTopHeadLines(forceServer: Boolean): Flow<Resource<UIHeadLinesCollection>> =
         flow{
-            var response: Resource<UIHeadLinesCollection>? = null
+            val response: Resource<UIHeadLinesCollection>?
             if (!forceServer) {
                 response = localSource()
                 emit(response)

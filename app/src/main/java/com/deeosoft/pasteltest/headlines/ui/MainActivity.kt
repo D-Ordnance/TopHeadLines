@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -38,29 +39,29 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val headLineViewModel by viewModels<HeadLineViewModel>()
+        headLineViewModel.getTopHeadLine()
         setContent {
             PastelTestTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = TitleBlack
                 ) {
-                    MainScreen()
+                    MainScreen(headLineViewModel)
                 }
             }
         }
     }
 }
 
-var calledOnce = false
-
 @Composable
-fun MainScreen(){
+fun MainScreen(viewModel: HeadLineViewModel = hiltViewModel()){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
         ToolbarAndHeaderComposable()
-        SwipeRefreshListComposable()
+        SwipeRefreshListComposable(viewModel)
     }
 }
 
@@ -89,14 +90,10 @@ fun ToolbarAndHeaderComposable(){
 fun ContentScreen(viewModel: HeadLineViewModel,
                   selectedItem: (HeadLineItem) -> Unit){
     val context = LocalContext.current
-    val loading = viewModel.loading.observeAsState()
     val failure = viewModel.failure.observeAsState()
     val success = viewModel.success.observeAsState()
-    if(loading.value == true){
-        println("loading ...")
-    }
+
     if(failure.value != null){
-        calledOnce = false
         Toast.makeText(
             context,
             viewModel.failure.value?.format(context) ?: context.getString(R.string.default_error_message),
@@ -104,7 +101,6 @@ fun ContentScreen(viewModel: HeadLineViewModel,
             .show()
     }
     if(success.value != null){
-        calledOnce = false
         LazyColumn{
             items(viewModel.success.value!!.articles) {
                 if (it != null) {
@@ -124,18 +120,14 @@ fun ContentScreen(viewModel: HeadLineViewModel,
 @Composable
 fun SwipeRefreshListComposable(viewModel: HeadLineViewModel = hiltViewModel()) {
     val context = LocalContext.current
-    val headLineViewModel = remember{viewModel}
-    val isLoading by headLineViewModel.loading.observeAsState()
+
+    val isLoading by viewModel.loading.observeAsState()
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isLoading!!)
-    if(!calledOnce) {
-        headLineViewModel.getTopHeadLine()
-        calledOnce = true
-    }
 
     SwipeRefresh(
         state = swipeRefreshState,
         onRefresh = {
-            (headLineViewModel::getTopHeadLine)(true)
+            (viewModel::getTopHeadLine)(true)
         }
     ) {
         ContentScreen(viewModel, selectedItem = {

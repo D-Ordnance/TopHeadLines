@@ -1,9 +1,15 @@
 package com.deeosoft.pasteltest.headlines.db.model
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "HeadLineItem")
+@Entity(tableName = "HeadLineItem",
+    indices = [
+        Index(
+            value = ["title", "url", "urlToImage"],
+            unique = true)]
+)
 data class HeadLineItem(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String,

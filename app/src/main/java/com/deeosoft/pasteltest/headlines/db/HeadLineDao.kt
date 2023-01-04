@@ -11,10 +11,10 @@ interface HeadLineDao {
     @Query("SELECT * from HeadLineItem ORDER BY id DESC")
     suspend fun getTopHeadLines(): List<HeadLineItem?>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(item: HeadLineItem)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(item: List<HeadLineItem?>)
 
 //    @Query("SELECT * from HeadLineItem")
