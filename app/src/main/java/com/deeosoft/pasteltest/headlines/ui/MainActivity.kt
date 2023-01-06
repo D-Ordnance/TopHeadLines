@@ -17,7 +17,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -106,6 +108,7 @@ fun ContentScreen(viewModel: HeadLineViewModel,
                 if (it != null) {
                     ItemCard(item = it,
                         placeholder = painterResource(id = R.drawable.image_placeholder),
+                        fallback = painterResource(id = R.drawable.image_fall_back),
                         modifier = Modifier
                             .height(200.dp)
                             .clickable {

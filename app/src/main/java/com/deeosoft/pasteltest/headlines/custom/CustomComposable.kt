@@ -15,15 +15,19 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.deeosoft.pasteltest.headlines.db.model.HeadLineItem
+import com.deeosoft.pasteltest.ui.theme.TitleBlack
 
 @Composable
 fun ItemCard(
     modifier: Modifier,
     item: HeadLineItem,
-    placeholder: Painter
+    placeholder: Painter,
+    fallback: Painter
 ){
     Box(
         modifier = modifier.fillMaxWidth()
+            .padding(bottom = 3.dp)
+            .background(TitleBlack),
     ) {
         AsyncImage(modifier = Modifier.fillMaxSize(),
             model = ImageRequest.Builder(LocalContext.current)
@@ -31,6 +35,7 @@ fun ItemCard(
                 .crossfade(true)
                 .build(),
             placeholder = placeholder,
+            fallback = fallback,
             contentDescription = item.author,
             contentScale = ContentScale.Crop)
         Box(
