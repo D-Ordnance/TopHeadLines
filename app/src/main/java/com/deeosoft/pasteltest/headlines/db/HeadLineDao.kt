@@ -14,7 +14,7 @@ interface HeadLineDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(item: HeadLineItem)
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(item: List<HeadLineItem?>)
 
 //    @Query("SELECT * from HeadLineItem")

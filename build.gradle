@@ -4,6 +4,10 @@ buildscript {
         retrofit_version = '2.9.0'
         hilt_version = '2.44'
         room_version = '2.4.3'
+        jUnit_version = '4.13.2'
+        mockito_version = '4.3.1'
+        androidX_test_version = '1.5.0'
+        mockk_version = '1.13.3'
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
