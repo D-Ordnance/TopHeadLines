@@ -4,6 +4,7 @@ import android.app.Application
 import android.database.sqlite.SQLiteConstraintException
 import com.deeosoft.pasteltest.BuildConfig
 import com.deeosoft.pasteltest.R
+import com.deeosoft.pasteltest.util.MockablePastel
 import com.deeosoft.pasteltest.headlines.db.HeadLineDatabase
 import com.deeosoft.pasteltest.headlines.db.model.HeadLineItem
 import com.deeosoft.pasteltest.headlines.db.model.UIHeadLinesCollection
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
+@MockablePastel
 class HeadLinesRepository
 @Inject constructor(
     private val networkService: NetworkService,

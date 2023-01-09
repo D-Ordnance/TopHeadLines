@@ -7,11 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.deeosoft.pasteltest.headlines.db.model.UIHeadLinesCollection
 import com.deeosoft.pasteltest.headlines.repository.HeadLinesRepository
 import com.deeosoft.pasteltest.headlines.repository.Resource
+import com.deeosoft.pasteltest.util.MockablePastel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@MockablePastel
 @HiltViewModel
 class HeadLineViewModel
     @Inject constructor(

@@ -5,9 +5,10 @@ buildscript {
         hilt_version = '2.44'
         room_version = '2.4.3'
         jUnit_version = '4.13.2'
-        mockito_version = '4.3.1'
-        androidX_test_version = '1.5.0'
-        mockk_version = '1.13.3'
+        mockito_version = '4.11.0'
+        mock_kotlin_version = '4.1.0'
+        coroutines_version = '1.6.4'
+        kotlin_version = '1.6.10'
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
@@ -15,4 +16,5 @@ plugins {
     id 'com.android.library' version '7.3.1' apply false
     id 'org.jetbrains.kotlin.android' version '1.6.10' apply false
     id 'com.google.dagger.hilt.android' version "$hilt_version" apply false
+    id 'org.jetbrains.kotlin.plugin.allopen' version "$kotlin_version" apply false
 }
