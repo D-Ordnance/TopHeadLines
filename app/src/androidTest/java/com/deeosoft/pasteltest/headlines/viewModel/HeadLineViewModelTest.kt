@@ -2,8 +2,6 @@ package com.deeosoft.pasteltest.headlines.viewModel
 
 import android.app.Application
 import android.content.Context
-import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -13,7 +11,6 @@ import com.deeosoft.pasteltest.infrastructure.network.NetworkService
 import com.deeosoft.pasteltest.headlines.repository.HeadLinesRepository
 import junit.framework.TestCase
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import retrofit2.Retrofit
@@ -45,7 +42,6 @@ class HeadLineViewModelTest: TestCase(){
     @Test
     fun `determine_local_db_is_not_null_after_first_insertion`(){
 
-//        database.headLineDao().insert()
         viewModel.getTopHeadLine(false)
     }
 }

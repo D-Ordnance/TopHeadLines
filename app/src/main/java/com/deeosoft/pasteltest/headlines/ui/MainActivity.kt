@@ -1,37 +1,36 @@
 package com.deeosoft.pasteltest.headlines.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.deeosoft.pasteltest.R
 import com.deeosoft.pasteltest.headlines.custom.ItemCard
 import com.deeosoft.pasteltest.headlines.db.model.HeadLineItem
-import com.deeosoft.pasteltest.ui.theme.PastelTestTheme
-import com.deeosoft.pasteltest.ui.theme.TitleBlack
 import com.deeosoft.pasteltest.util.format
 import com.deeosoft.pasteltest.headlines.viewModel.HeadLineViewModel
+import com.deeosoft.pasteltest.ui.theme.PastelDarkColor
+import com.deeosoft.pasteltest.ui.theme.PastelTestTheme
 import com.deeosoft.pasteltest.web.CustomWebView
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -44,15 +43,68 @@ class MainActivity : ComponentActivity() {
         val headLineViewModel by viewModels<HeadLineViewModel>()
         headLineViewModel.getTopHeadLine()
         setContent {
-            PastelTestTheme {
+            MaterialTheme(
+                colors = PastelDarkColor
+            ) {
+                GetScaffold(headLineViewModel)
+            }
+            /*PastelTestTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = TitleBlack
                 ) {
                     MainScreen(headLineViewModel)
                 }
-            }
+            }*/
         }
+    }
+}
+
+private fun showStateMessage(context: Context, msg: String){
+    //show error message if it is a dialog put your dialog here ...
+    Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+}
+
+@Composable
+fun GetScaffold(viewModel: HeadLineViewModel = hiltViewModel()){
+    Scaffold(
+        modifier = Modifier.fillMaxSize()
+            .background(MaterialTheme.colors.primary),
+        topBar = {
+            TopBarLayout()
+        },
+        content = {
+            ContentMainScreen(it, viewModel)
+        }
+    )
+}
+
+@Composable
+fun TopBarLayout(){
+    TopAppBar(
+        title = {
+            Text(
+                text = stringResource(R.string.news_feed),
+                color = Color.White
+            )
+        },
+    )
+}
+
+@Composable
+fun ContentMainScreen(padding: PaddingValues, viewModel: HeadLineViewModel){
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(padding)) {
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            text = stringResource(R.string.top_news),
+            fontSize = 15.sp,
+            color = MaterialTheme.colors.secondary
+        )
+        SwipeRefreshListComposable(viewModel)
     }
 }
 
