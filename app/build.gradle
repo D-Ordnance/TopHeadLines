@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.deeosoft.pasteltest"
-        minSdk 21
+        minSdk 23
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -27,6 +27,12 @@ android {
         debug{
             buildConfigField "String", "API_KEY", "\"2d021085c2e64c23927ff485d9f4299b\""
             buildConfigField "String", "BASE_URL", "\"https://newsapi.org/v2/\""
+        }
+        benchmark {
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['release']
+            debuggable false
+            proguardFiles getDefaultProguardFile ('proguard-android-optimize.txt'), 'benchmark-rules.pro'
         }
         release {
             buildConfigField "String", "API_KEY", "\"2d021085c2e64c23927ff485d9f4299b\""

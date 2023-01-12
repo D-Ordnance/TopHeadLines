@@ -29,7 +29,6 @@ import com.deeosoft.pasteltest.headlines.custom.ItemCard
 import com.deeosoft.pasteltest.headlines.db.model.HeadLineItem
 import com.deeosoft.pasteltest.util.format
 import com.deeosoft.pasteltest.headlines.viewModel.HeadLineViewModel
-import com.deeosoft.pasteltest.ui.theme.PastelDarkColor
 import com.deeosoft.pasteltest.ui.theme.PastelTestTheme
 import com.deeosoft.pasteltest.web.CustomWebView
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -43,19 +42,9 @@ class MainActivity : ComponentActivity() {
         val headLineViewModel by viewModels<HeadLineViewModel>()
         headLineViewModel.getTopHeadLine()
         setContent {
-            MaterialTheme(
-                colors = PastelDarkColor
-            ) {
+            PastelTestTheme{
                 GetScaffold(headLineViewModel)
             }
-            /*PastelTestTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = TitleBlack
-                ) {
-                    MainScreen(headLineViewModel)
-                }
-            }*/
         }
     }
 }
@@ -85,9 +74,10 @@ fun TopBarLayout(){
         title = {
             Text(
                 text = stringResource(R.string.news_feed),
-                color = Color.White
+                color = MaterialTheme.colors.secondary
             )
         },
+        backgroundColor = MaterialTheme.colors.primaryVariant
     )
 }
 
@@ -96,13 +86,14 @@ fun ContentMainScreen(padding: PaddingValues, viewModel: HeadLineViewModel){
     Column(
         Modifier
             .fillMaxSize()
-            .padding(padding)) {
+            .padding(padding)
+            .background(MaterialTheme.colors.primary)) {
         Text(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
             text = stringResource(R.string.top_news),
             fontSize = 15.sp,
-            color = MaterialTheme.colors.secondary
+            color = MaterialTheme.colors.secondary,
         )
         SwipeRefreshListComposable(viewModel)
     }
@@ -129,13 +120,13 @@ fun ToolbarAndHeaderComposable(){
             title = {
                 Text(
                     text = stringResource(R.string.news_feed),
-                    color = Color.White
+                    color = MaterialTheme.colors.secondary
                 )
             },
         )
         Text(text = stringResource(R.string.top_news),
             fontSize = 15.sp,
-            color = Color.White
+            color = MaterialTheme.colors.secondary
         )
     }
 }

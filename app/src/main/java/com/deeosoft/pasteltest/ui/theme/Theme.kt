@@ -7,6 +7,18 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
+
+val PastelDarkColorPalette = darkColors(
+    primary = TitleBlack,
+    primaryVariant = ToolbarBlack,
+    secondary = white
+)
+val PastelLightColorPalette = darkColors(
+    primary = TitleWhite,
+    primaryVariant = TitleWhite,
+    secondary = black
+)
+
 private val DarkColorPalette = darkColors(
     primary = ToolbarBlack,
     primaryVariant = Color.Black,
@@ -31,9 +43,9 @@ private val LightColorPalette = lightColors(
 @Composable
 fun PastelTestTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
-        DarkColorPalette
+        PastelDarkColorPalette
     } else {
-        LightColorPalette
+        PastelLightColorPalette
     }
 
     MaterialTheme(

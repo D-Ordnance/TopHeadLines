@@ -7,10 +7,8 @@ val Teal200 = Color(0xFF03DAC5)
 
 val ToolbarBlack = Color(0xFF23232A)
 val TitleBlack = Color(0xFF1E1C21)
-val white = Color(0xFFFFFFFF)
 
-val PastelDarkColor = darkColors(
-    primary = TitleBlack,
-    primaryVariant = ToolbarBlack,
-    secondary = white
-)
+val TitleWhite = Color(0xFFDCD5E6)
+
+val white = Color(0xFFFFFFFF)
+val black = Color(0xFF000000)
