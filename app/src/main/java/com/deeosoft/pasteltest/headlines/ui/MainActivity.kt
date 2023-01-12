@@ -16,7 +16,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -50,7 +49,6 @@ class MainActivity : ComponentActivity() {
 }
 
 private fun showStateMessage(context: Context, msg: String){
-    //show error message if it is a dialog put your dialog here ...
     Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
 }
 
@@ -100,17 +98,6 @@ fun ContentMainScreen(padding: PaddingValues, viewModel: HeadLineViewModel){
 }
 
 @Composable
-fun MainScreen(viewModel: HeadLineViewModel = hiltViewModel()){
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        ToolbarAndHeaderComposable()
-        SwipeRefreshListComposable(viewModel)
-    }
-}
-
-@Composable
 fun ToolbarAndHeaderComposable(){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -139,11 +126,7 @@ fun ContentScreen(viewModel: HeadLineViewModel,
     val success = viewModel.success.observeAsState()
 
     if(failure.value != null){
-        Toast.makeText(
-            context,
-            viewModel.failure.value?.format(context) ?: context.getString(R.string.default_error_message),
-            Toast.LENGTH_LONG)
-            .show()
+        showStateMessage(context, viewModel.failure.value?.format(context) ?: context.getString(R.string.default_error_message))
     }
     if(success.value != null){
         LazyColumn{
