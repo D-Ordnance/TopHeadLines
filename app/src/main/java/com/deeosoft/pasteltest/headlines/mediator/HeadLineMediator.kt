@@ -5,7 +5,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.deeosoft.pasteltest.headlines.db.HeadLineDatabase
-import com.deeosoft.pasteltest.headlines.db.model.HeadLineItem
+import com.deeosoft.pasteltest.headlines.data.model.HeadLineItem
 import com.deeosoft.pasteltest.infrastructure.network.NetworkService
 import javax.inject.Inject
 

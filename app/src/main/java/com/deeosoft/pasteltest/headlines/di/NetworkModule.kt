@@ -1,4 +1,4 @@
-package com.deeosoft.pasteltest.infrastructure.network.di
+package com.deeosoft.pasteltest.headlines.di
 
 import android.content.Context
 import com.deeosoft.pasteltest.BuildConfig

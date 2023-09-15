@@ -1,4 +1,4 @@
-package com.deeosoft.pasteltest.headlines.db.di
+package com.deeosoft.pasteltest.headlines.di
 
 import android.content.Context
 import androidx.room.Room

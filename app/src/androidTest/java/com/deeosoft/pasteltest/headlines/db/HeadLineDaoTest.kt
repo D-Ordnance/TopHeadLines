@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.deeosoft.pasteltest.headlines.db.model.HeadLineItemWithoutAutoGeneratingTestCase
+import com.deeosoft.pasteltest.headlines.data.model.HeadLineItemWithoutAutoGeneratingTestCase
 import com.deeosoft.pasteltest.headlines.db.HeadLineDao
 import com.deeosoft.pasteltest.headlines.db.HeadLineDatabase
 import com.deeosoft.pasteltest.headlines.db.HeadLineItemWithoutAutoGeneratingTestDao

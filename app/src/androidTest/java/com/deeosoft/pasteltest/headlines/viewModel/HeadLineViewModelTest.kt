@@ -7,6 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.deeosoft.pasteltest.BuildConfig
 import com.deeosoft.pasteltest.headlines.db.HeadLineDatabase
+import com.deeosoft.pasteltest.headlines.presentation.ui.viewModel.HeadLineViewModel
 import com.deeosoft.pasteltest.infrastructure.network.NetworkService
 import com.deeosoft.pasteltest.headlines.repository.HeadLinesRepository
 import junit.framework.TestCase

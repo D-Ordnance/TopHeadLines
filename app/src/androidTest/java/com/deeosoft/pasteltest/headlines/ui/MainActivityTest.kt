@@ -10,8 +10,10 @@ import androidx.test.core.app.ApplicationProvider
 import com.deeosoft.pasteltest.BuildConfig
 import com.deeosoft.pasteltest.R
 import com.deeosoft.pasteltest.headlines.db.HeadLineDatabase
+import com.deeosoft.pasteltest.headlines.presentation.ui.SwipeRefreshListComposable
+import com.deeosoft.pasteltest.headlines.presentation.ui.ToolbarAndHeaderComposable
 import com.deeosoft.pasteltest.headlines.repository.HeadLinesRepository
-import com.deeosoft.pasteltest.headlines.viewModel.HeadLineViewModel
+import com.deeosoft.pasteltest.headlines.presentation.ui.viewModel.HeadLineViewModel
 import com.deeosoft.pasteltest.infrastructure.network.NetworkService
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import org.junit.Before

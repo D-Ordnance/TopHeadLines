@@ -1,4 +1,4 @@
-package com.deeosoft.pasteltest.headlines.ui
+package com.deeosoft.pasteltest.headlines.presentation.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -24,10 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.deeosoft.pasteltest.R
-import com.deeosoft.pasteltest.headlines.custom.ItemCard
-import com.deeosoft.pasteltest.headlines.db.model.HeadLineItem
+import com.deeosoft.pasteltest.headlines.presentation.custom.ItemCard
+import com.deeosoft.pasteltest.headlines.data.model.HeadLineItem
 import com.deeosoft.pasteltest.util.format
-import com.deeosoft.pasteltest.headlines.viewModel.HeadLineViewModel
+import com.deeosoft.pasteltest.headlines.presentation.viewModel.HeadLineViewModel
 import com.deeosoft.pasteltest.ui.theme.PastelTestTheme
 import com.deeosoft.pasteltest.web.CustomWebView
 import com.google.accompanist.swiperefresh.SwipeRefresh

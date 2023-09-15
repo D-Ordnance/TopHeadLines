@@ -2,8 +2,8 @@ package com.deeosoft.pasteltest.headlines.db
 
 import androidx.paging.PagingSource
 import androidx.room.*
-import com.deeosoft.pasteltest.headlines.db.model.HeadLineItem
-import com.deeosoft.pasteltest.headlines.db.model.HeadLineItemWithoutAutoGeneratingTestCase
+import com.deeosoft.pasteltest.headlines.data.model.HeadLineItem
+import com.deeosoft.pasteltest.headlines.data.model.HeadLineItemWithoutAutoGeneratingTestCase
 
 @Dao
 interface HeadLineDao {

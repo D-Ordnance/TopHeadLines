@@ -1,5 +1,6 @@
 package com.deeosoft.pasteltest.headlines.viewModel
 
+import com.deeosoft.pasteltest.headlines.presentation.ui.viewModel.HeadLineViewModel
 import com.deeosoft.pasteltest.headlines.repository.HeadLinesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

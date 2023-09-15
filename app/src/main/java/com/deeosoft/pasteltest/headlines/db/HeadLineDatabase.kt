@@ -2,8 +2,8 @@ package com.deeosoft.pasteltest.headlines.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.deeosoft.pasteltest.headlines.db.model.HeadLineItem
-import com.deeosoft.pasteltest.headlines.db.model.HeadLineItemWithoutAutoGeneratingTestCase
+import com.deeosoft.pasteltest.headlines.data.model.HeadLineItem
+import com.deeosoft.pasteltest.headlines.data.model.HeadLineItemWithoutAutoGeneratingTestCase
 
 @Database(
     entities = [HeadLineItem::class, HeadLineItemWithoutAutoGeneratingTestCase::class],

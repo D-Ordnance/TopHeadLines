@@ -1,4 +1,4 @@
-package com.deeosoft.pasteltest.headlines.custom
+package com.deeosoft.pasteltest.headlines.presentation.custom
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.deeosoft.pasteltest.headlines.db.model.HeadLineItem
+import com.deeosoft.pasteltest.headlines.data.model.HeadLineItem
 import com.deeosoft.pasteltest.ui.theme.TitleBlack
 
 @Composable
