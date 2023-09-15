@@ -3,20 +3,16 @@ package com.deeosoft.pasteltest.headlines.db
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.deeosoft.pasteltest.headlines.data.model.HeadLineItemWithoutAutoGeneratingTestCase
-import com.deeosoft.pasteltest.headlines.db.HeadLineDao
-import com.deeosoft.pasteltest.headlines.db.HeadLineDatabase
-import com.deeosoft.pasteltest.headlines.db.HeadLineItemWithoutAutoGeneratingTestDao
 import junit.framework.TestCase
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.stream.Stream.concat
+import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(AndroidJUnit4::class)
+@RunWith(MockitoJUnitRunner::class)
 class HeadLineDaoTest: TestCase() {
 
     private lateinit var database: HeadLineDatabase

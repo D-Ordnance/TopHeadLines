@@ -9,6 +9,7 @@ import com.deeosoft.pasteltest.headlines.domain.repository.HeadLineRepository
 import com.deeosoft.pasteltest.headlines.domain.repository.Resource
 import com.deeosoft.pasteltest.util.MockablePastel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,6 +18,7 @@ import javax.inject.Inject
 class HeadLineViewModel
 @Inject constructor(
     private val repository: HeadLineRepository,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ): ViewModel() {
 
     private var _success: MutableLiveData<UIHeadLinesCollection> = MutableLiveData()
@@ -29,10 +31,10 @@ class HeadLineViewModel
     val loading: LiveData<Boolean> = _loading
 
     fun getTopHeadLine(forceServer: Boolean = false){
-        viewModelScope.launch(Dispatchers.IO) {
-            if(forceServer){
-                _loading.postValue(true)
-            }
+        if(forceServer){
+            _loading.postValue(true)
+        }
+        viewModelScope.launch(dispatcher) {
             repository.getTopHeadLines(forceServer).collect{
                 _loading.postValue(false)
                 if(it is Resource.Error){
