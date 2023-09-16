@@ -26,7 +26,6 @@ class HeadLineDataSourceImpl @Inject constructor(
             else {
                 Resource.Error(response.status)
             }
-
         }catch (ex: Exception){
             ex.printStackTrace()
             Resource.Error(ex.message!!)
