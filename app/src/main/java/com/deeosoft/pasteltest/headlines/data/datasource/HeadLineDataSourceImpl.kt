@@ -9,26 +9,31 @@ import com.deeosoft.pasteltest.headlines.data.model.UIHeadLinesCollection
 import com.deeosoft.pasteltest.headlines.db.HeadLineDatabase
 import com.deeosoft.pasteltest.headlines.domain.repository.Resource
 import com.deeosoft.pasteltest.infrastructure.network.NetworkService
+import com.deeosoft.pasteltest.infrastructure.util.Connection
 import javax.inject.Inject
 
 class HeadLineDataSourceImpl @Inject constructor(
     private val database: HeadLineDatabase,
     private val networkService: NetworkService,
+    private val connection: Connection,
     private val context: Context
 ): HeadLineDataSource {
     override suspend fun remoteSource(): Resource<UIHeadLinesCollection> =
-        try {
-            val response = networkService.getTopHeadLines(apiKey = BuildConfig.API_KEY)
-            if(response.status.equals("ok", ignoreCase = true)) {
-                saveToLocal(response.articles)
-                localSource()
+        if(connection.isNetworkAvailable()) {
+            try {
+                val response = networkService.getTopHeadLines(apiKey = BuildConfig.API_KEY)
+                if (response.status.equals("ok", ignoreCase = true)) {
+                    saveToLocal(response.articles)
+                    localSource()
+                } else {
+                    Resource.Error(response.status)
+                }
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+                Resource.Error(ex.message!!)
             }
-            else {
-                Resource.Error(response.status)
-            }
-        }catch (ex: Exception){
-            ex.printStackTrace()
-            Resource.Error(ex.message!!)
+        }else{
+            Resource.Error("No Internet Connection")
         }
 
     override suspend fun localSource(): Resource<UIHeadLinesCollection> =

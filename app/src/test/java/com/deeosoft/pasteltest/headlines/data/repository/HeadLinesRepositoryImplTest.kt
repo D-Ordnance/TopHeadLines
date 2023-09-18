@@ -154,7 +154,7 @@ class HeadLinesRepositoryImplTest {
         }
 
     companion object {
-        fun headLineItems(): List<HeadLineItem?> {
+        fun headLineItems(): List<HeadLineItem> {
             return arrayListOf(
                 HeadLineItem(
                     id = 0,
