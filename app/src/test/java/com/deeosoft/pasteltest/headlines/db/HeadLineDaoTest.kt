@@ -54,7 +54,6 @@ class HeadLineDaoTest: TestCase() {
         }
         assertTrue(listWithOutId.contains(headLineItem))
     }
-
     @Test
     fun `insert_list_of_headLine_Item_to_database_and_check_if_it_exist_using_size`() = runBlocking{
         //we cannot have similar item because there is a conflict strategy

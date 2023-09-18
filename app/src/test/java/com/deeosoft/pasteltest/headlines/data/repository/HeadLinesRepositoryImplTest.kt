@@ -1,35 +1,25 @@
 package com.deeosoft.pasteltest.headlines.data.repository
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.deeosoft.pasteltest.headlines.data.datasource.HeadLineDataSource
 import com.deeosoft.pasteltest.headlines.data.model.HeadLineItem
 import com.deeosoft.pasteltest.headlines.data.model.UIHeadLinesCollection
 import com.deeosoft.pasteltest.headlines.domain.repository.HeadLineRepository
 import com.deeosoft.pasteltest.headlines.domain.repository.Resource
-import com.deeosoft.pasteltest.util.MainDispatcherRule
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TestRule
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.verifyNoInteractions
+
+typealias body<T> = (result: MutableList<T>) -> Unit
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HeadLinesRepositoryImplTest {
@@ -39,6 +29,12 @@ class HeadLinesRepositoryImplTest {
 
     private val forceServer = true
     private val expectedResult = headLineItems()
+    private val sourceSuccessStubResult = Resource.Success(
+        UIHeadLinesCollection(
+            headLineItems()
+        )
+    )
+    private val sourceErrorStubResult = Resource.Error<UIHeadLinesCollection>(expectedErrorMsg)
 
     @Before
     fun setUp() {
@@ -46,110 +42,115 @@ class HeadLinesRepositoryImplTest {
         repository = HeadLineRepositoryImpl(dataSource)
     }
 
+    private fun localSourceArrangeAndAct(
+        expected: Resource<UIHeadLinesCollection>,
+        body: body<Resource<UIHeadLinesCollection>>
+    ) = runTest {
+        `when`(dataSource.localSource()).thenReturn(expected)
+        val result = mutableListOf<Resource<UIHeadLinesCollection>>()
+        backgroundScope.launch(UnconfinedTestDispatcher()) {
+            repository.getTopHeadLines(!forceServer).toList(result)
+        }
+        body(result)
+    }
+
     @Test
     fun `should verify localSource interaction and return Success when !forceServe is called`() =
         runTest {
-            `when`(dataSource.localSource()).thenReturn(
-                Resource.Success(
-                    UIHeadLinesCollection(
-                        headLineItems()
-                    )
-                )
-            )
-            val result = mutableListOf<Resource<UIHeadLinesCollection>>()
-            backgroundScope.launch(UnconfinedTestDispatcher()) {
-                repository.getTopHeadLines(!forceServer).toList(result)
+            localSourceArrangeAndAct(
+                sourceSuccessStubResult
+            ) {
+                assertEquals(expectedResult, it[0].data?.articles!!)
+                launch {
+                    verify(dataSource, times(1)).localSource()
+                    verify(dataSource, times(1)).remoteSource()
+                }
             }
-
-            assertEquals(expectedResult, result[0].data?.articles!!)
-            verify(dataSource, times(1)).localSource()
-            verify(dataSource, times(1)).remoteSource()
         }
 
     @Test
     fun `should verify localSource interaction and return Error when !forceServe is called`() =
         runTest {
-            `when`(dataSource.localSource()).thenReturn(
-                Resource.Error(expectedErrorMsg)
-            )
-            val result = mutableListOf<Resource<UIHeadLinesCollection>>()
-            backgroundScope.launch(UnconfinedTestDispatcher()) {
-                repository.getTopHeadLines(!forceServer).toList(result)
+            localSourceArrangeAndAct(
+                sourceErrorStubResult
+            ) {
+                assertEquals(expectedErrorMsg, it[0].message!!)
+                launch {
+                    verify(dataSource, times(1)).localSource()
+                    verify(dataSource, times(1)).remoteSource()
+                }
             }
-
-            assertEquals(expectedErrorMsg, result[0].message!!)
-            verify(dataSource, times(1)).localSource()
-            verify(dataSource, times(1)).remoteSource()
         }
 
+    private fun remoteSourceArrangeAndAct(
+        expected: Resource<UIHeadLinesCollection>,
+        body: body<Resource<UIHeadLinesCollection>>
+    ) = runTest {
+        `when`(dataSource.remoteSource()).thenReturn(expected)
+        val result = mutableListOf<Resource<UIHeadLinesCollection>>()
+        backgroundScope.launch(UnconfinedTestDispatcher()) {
+            repository.getTopHeadLines(forceServer).toList(result)
+        }
+        body(result)
+    }
     @Test
     fun `should verify remoteSource interaction and return Success when forceServe is called`() =
         runTest {
-            `when`(dataSource.remoteSource()).thenReturn(
-                Resource.Success(UIHeadLinesCollection(expectedResult))
-            )
-            val result = mutableListOf<Resource<UIHeadLinesCollection>>()
-            backgroundScope.launch(UnconfinedTestDispatcher()) {
-                repository.getTopHeadLines(forceServer).toList(result)
+            remoteSourceArrangeAndAct(sourceSuccessStubResult){
+                assertEquals(expectedResult, it[0].data?.articles!!)
+                launch{
+                    verify(dataSource, times(0)).localSource()
+                    verify(dataSource, times(1)).remoteSource()
+                }
             }
-
-            assertEquals(expectedResult, result[0].data?.articles!!)
-            verify(dataSource, times(0)).localSource()
-            verify(dataSource, times(1)).remoteSource()
         }
 
     @Test
     fun `should verify remoteSource interaction and return Error when forceServe is called`() =
         runTest {
-            `when`(dataSource.remoteSource()).thenReturn(
-                Resource.Error(expectedErrorMsg)
-            )
-            val result = mutableListOf<Resource<UIHeadLinesCollection>>()
-            backgroundScope.launch(UnconfinedTestDispatcher()) {
-                repository.getTopHeadLines(forceServer).toList(result)
+            remoteSourceArrangeAndAct(sourceErrorStubResult){
+                assertEquals(expectedErrorMsg, it[0].message!!)
+                launch{
+                    verify(dataSource, times(0)).localSource()
+                    verify(dataSource, times(1)).remoteSource()
+                }
             }
-
-            assertEquals(expectedErrorMsg, result[0].message!!)
-            verify(dataSource, times(0)).localSource()
-            verify(dataSource, times(1)).remoteSource()
         }
 
+    private fun localAndRemoteSourceArrangeAndAct(
+        expected: Resource<UIHeadLinesCollection>,
+        body: body<Resource<UIHeadLinesCollection>>
+    ) = runTest {
+        `when`(dataSource.localSource()).thenReturn(expected)
+        `when`(dataSource.remoteSource()).thenReturn(expected)
+        val result = mutableListOf<Resource<UIHeadLinesCollection>>()
+        backgroundScope.launch(UnconfinedTestDispatcher()) {
+            repository.getTopHeadLines(!forceServer).toList(result)
+        }
+        body(result)
+    }
     @Test
     fun `should verify localSource and remoteSource interaction and return Error when !forceServe is called`() =
         runTest {
-            `when`(dataSource.localSource()).thenReturn(
-                Resource.Error(expectedErrorMsg)
-            )
-            `when`(dataSource.remoteSource()).thenReturn(
-                Resource.Error(expectedErrorMsg)
-            )
-            val result = mutableListOf<Resource<UIHeadLinesCollection>>()
-            backgroundScope.launch(UnconfinedTestDispatcher()) {
-                repository.getTopHeadLines(!forceServer).toList(result)
+            localAndRemoteSourceArrangeAndAct(sourceErrorStubResult){
+                assertEquals(2, it.size)
+                launch {
+                    verify(dataSource, times(1)).localSource()
+                    verify(dataSource, times(1)).remoteSource()
+                }
             }
-
-            assertEquals(2, result.size)
-            verify(dataSource, times(1)).localSource()
-            verify(dataSource, times(1)).remoteSource()
         }
 
     @Test
     fun `should verify localSource and remoteSource interaction and return Success when !forceServe is called`() =
         runTest {
-            `when`(dataSource.localSource()).thenReturn(
-                Resource.Success(UIHeadLinesCollection(expectedResult))
-            )
-            `when`(dataSource.remoteSource()).thenReturn(
-                Resource.Success(UIHeadLinesCollection(expectedResult))
-            )
-            val result = mutableListOf<Resource<UIHeadLinesCollection>>()
-            backgroundScope.launch(UnconfinedTestDispatcher()) {
-                repository.getTopHeadLines(!forceServer).toList(result)
+            localAndRemoteSourceArrangeAndAct(sourceSuccessStubResult){
+                assertEquals(2, it.size)
+                launch {
+                    verify(dataSource, times(1)).localSource()
+                    verify(dataSource, times(1)).remoteSource()
+                }
             }
-
-            assertEquals(2, result.size)
-            verify(dataSource, times(1)).localSource()
-            verify(dataSource, times(1)).remoteSource()
         }
 
     companion object {
@@ -178,6 +179,7 @@ class HeadLinesRepositoryImplTest {
                 )
             )
         }
+
         const val expectedErrorMsg = "Failed to load"
     }
 }
