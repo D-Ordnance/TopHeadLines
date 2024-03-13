@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PastelTest</string>
+    <string name="app_name">DeoNews</string>
     <string name="network_error_message">Something went wrong</string>
     <string name="news_feed">Newsfeed</string>
     <string name="top_news">Top News</string>
