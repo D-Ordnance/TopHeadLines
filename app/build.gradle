@@ -7,13 +7,13 @@ plugins {
 }
 
 android {
-    namespace 'com.deeosoft.pasteltest'
-    compileSdk 33
+    namespace 'com.deeosoft.deonews'
+    compileSdk 34
 
     defaultConfig {
-        applicationId "com.deeosoft.pasteltest"
+        applicationId "com.deeosoft.deonews"
         minSdk 23
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -25,8 +25,8 @@ android {
 
     buildTypes {
         debug{
-            buildConfigField "String", "API_KEY", "\"2d021085c2e64c23927ff485d9f4299b\""
-            buildConfigField "String", "BASE_URL", "\"https://newsapi.org/v2/\""
+            buildConfigField "String", "API_KEY", "\"GwELsy50f5R9N7CF4Q6w8ADOj3BIuEC5PRfkSnSy\""
+            buildConfigField "String", "BASE_URL", "\"https://api.thenewsapi.com/v1/news/\""
         }
         benchmark {
             signingConfig signingConfigs.debug
@@ -35,7 +35,9 @@ android {
             proguardFiles getDefaultProguardFile ('proguard-android-optimize.txt'), 'benchmark-rules.pro'
         }
         release {
-            buildConfigField "String", "API_KEY", "\"2d021085c2e64c23927ff485d9f4299b\""
+            buildConfigField "String", "API_KEY", "\"GwELsy50f5R9N7CF4Q6w8ADOj3BIuEC5PRfkSnSy\""
+//            buildConfigField "String", "BASE_URL", "\"https://newsapi.org/v2/\""
+            buildConfigField "String", "BASE_URL", "\"https://api.thenewsapi.com/v1/news/\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
